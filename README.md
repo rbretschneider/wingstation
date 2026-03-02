@@ -27,6 +27,29 @@ docker run -d \
 
 Then visit [http://localhost:8080](http://localhost:8080).
 
+### Docker Socket Permissions
+
+WingStation needs read access to the Docker socket. If the container exits with "permission denied", find your Docker group GID and pass it:
+
+```bash
+# Find your docker GID
+stat -c '%g' /var/run/docker.sock
+# Example output: 996
+```
+
+Then either run with `--group-add`:
+
+```bash
+docker run -d \
+  --name wingstation \
+  -p 8080:8080 \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  --group-add 996 \
+  ghcr.io/rbretschneider/wingstation:latest
+```
+
+Or set `group_add` in your compose file (see below).
+
 ### Docker Compose
 
 ```yaml
@@ -38,6 +61,9 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    # Set this to your docker group GID (run: stat -c '%g' /var/run/docker.sock)
+    group_add:
+      - "996"
     read_only: true
     security_opt:
       - no-new-privileges:true

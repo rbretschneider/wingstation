@@ -13,6 +13,10 @@ services:
       # - WINGSTATION_AUTH_USER=admin
       # - WINGSTATION_AUTH_PASS=changeme
       # - WINGSTATION_LOG_LEVEL=debug
+    # Docker socket access: set to your docker group GID
+    # Find it with: stat -c '%g' /var/run/docker.sock
+    group_add:
+      - "996"
     read_only: true
     security_opt:
       - no-new-privileges:true

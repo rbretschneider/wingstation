@@ -1,0 +1,75 @@
+{{define "detail_panel"}}
+<div x-data="{ activeTab: 'general' }">
+    <!-- Header -->
+    <div class="flex items-center space-x-3 mb-4">
+        {{if .Labels.Icon}}
+        <span class="text-3xl">{{.Labels.Icon}}</span>
+        {{end}}
+        <div>
+            <h3 class="text-xl font-bold text-gray-900">{{.Labels.DisplayName .Name}}</h3>
+            <p class="text-sm text-gray-500">{{.Image}}</p>
+        </div>
+        <span class="ml-auto flex items-center space-x-1">
+            <span class="w-2.5 h-2.5 rounded-full {{statusColor .State}}"></span>
+            <span class="text-sm font-medium capitalize">{{.State}}</span>
+        </span>
+    </div>
+
+    {{if .Labels.Description}}
+    <p class="text-sm text-gray-600 mb-4">{{.Labels.Description}}</p>
+    {{end}}
+
+    {{if .Labels.URL}}
+    <a href="{{.Labels.URL}}" target="_blank" rel="noopener noreferrer"
+       class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-4">
+        Open Service →
+    </a>
+    {{end}}
+
+    <!-- Tabs -->
+    <div class="border-b border-gray-200 mb-4">
+        <nav class="flex space-x-4">
+            <button @click="activeTab = 'general'"
+                    :class="activeTab === 'general' ? 'tab-active' : 'text-gray-500 hover:text-gray-700'"
+                    class="pb-2 text-sm font-medium">General</button>
+            <button @click="activeTab = 'networking'"
+                    :class="activeTab === 'networking' ? 'tab-active' : 'text-gray-500 hover:text-gray-700'"
+                    class="pb-2 text-sm font-medium">Networking</button>
+            <button @click="activeTab = 'volumes'"
+                    :class="activeTab === 'volumes' ? 'tab-active' : 'text-gray-500 hover:text-gray-700'"
+                    class="pb-2 text-sm font-medium">Volumes</button>
+            <button @click="activeTab = 'security'"
+                    :class="activeTab === 'security' ? 'tab-active' : 'text-gray-500 hover:text-gray-700'"
+                    class="pb-2 text-sm font-medium">Security</button>
+            <button @click="activeTab = 'hardware'"
+                    :class="activeTab === 'hardware' ? 'tab-active' : 'text-gray-500 hover:text-gray-700'"
+                    class="pb-2 text-sm font-medium">Hardware</button>
+        </nav>
+    </div>
+
+    <!-- General Tab -->
+    <div x-show="activeTab === 'general'" class="space-y-4">
+        {{template "detail_general" .}}
+    </div>
+
+    <!-- Networking Tab -->
+    <div x-show="activeTab === 'networking'" class="space-y-4" style="display: none;">
+        {{template "detail_networking" .}}
+    </div>
+
+    <!-- Volumes Tab -->
+    <div x-show="activeTab === 'volumes'" class="space-y-4" style="display: none;">
+        {{template "detail_volumes" .}}
+    </div>
+
+    <!-- Security Tab -->
+    <div x-show="activeTab === 'security'" class="space-y-4" style="display: none;">
+        {{template "detail_security" .}}
+    </div>
+
+    <!-- Hardware Tab -->
+    <div x-show="activeTab === 'hardware'" class="space-y-4" style="display: none;">
+        {{template "detail_hardware" .}}
+    </div>
+</div>
+{{end}}

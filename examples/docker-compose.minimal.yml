@@ -1,0 +1,20 @@
+# Minimal example: Just WingStation watching your existing containers
+#
+# Run with: docker compose -f examples/docker-compose.minimal.yml up -d
+# Then visit: http://localhost:8080
+#
+# WingStation will automatically discover and display ALL running containers.
+# No labels needed — labels just let you customize grouping, names, and icons.
+
+services:
+  wingstation:
+    image: ghcr.io/rbretschneider/wingstation:latest
+    container_name: wingstation
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    read_only: true
+    security_opt:
+      - no-new-privileges:true

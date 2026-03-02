@@ -1,0 +1,31 @@
+{{define "navbar"}}
+<nav class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center space-x-3">
+                <a href="/" class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/>
+                    </svg>
+                    <span class="text-xl font-bold text-gray-900">WingStation</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="/" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium {{if eq .Page "dashboard"}}text-blue-600 font-semibold{{end}}">
+                    Dashboard
+                </a>
+                <a href="/host" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium {{if eq .Page "host"}}text-blue-600 font-semibold{{end}}">
+                    Host Info
+                </a>
+                <div class="flex items-center space-x-1 text-xs"
+                     :class="$store.app.sseConnected ? 'sse-connected' : 'sse-disconnected'">
+                    <span class="w-2 h-2 rounded-full"
+                          :class="$store.app.sseConnected ? 'bg-green-500' : 'bg-red-500'"></span>
+                    <span x-text="$store.app.sseConnected ? 'Live' : 'Disconnected'"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{{end}}

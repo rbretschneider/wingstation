@@ -1,0 +1,25 @@
+services:
+  wingstation:
+    image: ghcr.io/rbretschneider/wingstation:latest
+    container_name: wingstation
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - WINGSTATION_PORT=8080
+      # - WINGSTATION_AUTH_ENABLED=true
+      # - WINGSTATION_AUTH_USER=admin
+      # - WINGSTATION_AUTH_PASS=changeme
+      # - WINGSTATION_LOG_LEVEL=debug
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      wingstation.name: "WingStation"
+      wingstation.group: "Infrastructure"
+      wingstation.icon: "🖥️"
+      wingstation.description: "Docker container dashboard"
+      wingstation.url: "http://localhost:8080"
+      wingstation.priority: "1"

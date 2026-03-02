@@ -1,0 +1,16 @@
+{{define "container_group"}}
+<div class="mb-8">
+    <div class="flex items-center space-x-2 mb-4">
+        {{if .Icon}}
+        <span class="text-xl">{{.Icon}}</span>
+        {{end}}
+        <h2 class="text-lg font-semibold text-gray-900">{{.Name}}</h2>
+        <span class="text-sm text-gray-400">({{len .Containers}})</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {{range .Containers}}
+        {{template "container_card" .}}
+        {{end}}
+    </div>
+</div>
+{{end}}

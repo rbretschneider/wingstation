@@ -1,0 +1,225 @@
+# Example: Full homelab stack with WingStation labels
+#
+# This shows how WingStation organizes containers using labels.
+# Run with: docker compose -f examples/docker-compose.homelab.yml up -d
+# Then visit: http://localhost:8080
+
+services:
+  # ── WingStation (the dashboard itself) ──────────────────────────
+  wingstation:
+    image: ghcr.io/rbretschneider/wingstation:latest
+    container_name: wingstation
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      wingstation.name: "WingStation"
+      wingstation.group: "Infrastructure"
+      wingstation.icon: "🖥️"
+      wingstation.description: "Docker container dashboard"
+      wingstation.url: "http://localhost:8080"
+      wingstation.priority: "1"
+      wingstation.tags: "dashboard,monitoring"
+
+  # ── Media ───────────────────────────────────────────────────────
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - plex-config:/config
+      - /mnt/media:/media
+    labels:
+      wingstation.name: "Plex"
+      wingstation.group: "Media"
+      wingstation.icon: "🎬"
+      wingstation.description: "Stream movies and TV shows"
+      wingstation.url: "http://localhost:32400/web"
+      wingstation.priority: "10"
+      wingstation.tags: "media,streaming"
+
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    ports:
+      - "8989:8989"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - sonarr-config:/config
+      - /mnt/media/tv:/tv
+      - /mnt/downloads:/downloads
+    labels:
+      wingstation.name: "Sonarr"
+      wingstation.group: "Media"
+      wingstation.icon: "📺"
+      wingstation.description: "TV show management and automation"
+      wingstation.url: "http://localhost:8989"
+      wingstation.priority: "20"
+      wingstation.tags: "media,automation,pvr"
+
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    ports:
+      - "7878:7878"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - radarr-config:/config
+      - /mnt/media/movies:/movies
+      - /mnt/downloads:/downloads
+    labels:
+      wingstation.name: "Radarr"
+      wingstation.group: "Media"
+      wingstation.icon: "🎥"
+      wingstation.description: "Movie management and automation"
+      wingstation.url: "http://localhost:7878"
+      wingstation.priority: "21"
+      wingstation.tags: "media,automation,pvr"
+
+  # ── Networking ──────────────────────────────────────────────────
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - nginx-conf:/etc/nginx/conf.d
+      - nginx-certs:/etc/nginx/certs
+    labels:
+      wingstation.name: "Nginx Proxy"
+      wingstation.group: "Networking"
+      wingstation.icon: "🌐"
+      wingstation.description: "Reverse proxy for all services"
+      wingstation.priority: "5"
+      wingstation.tags: "proxy,networking"
+
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8053:80"
+    environment:
+      - WEBPASSWORD=changeme
+    volumes:
+      - pihole-data:/etc/pihole
+      - pihole-dns:/etc/dnsmasq.d
+    labels:
+      wingstation.name: "Pi-hole"
+      wingstation.group: "Networking"
+      wingstation.icon: "🛡️"
+      wingstation.description: "Network-wide ad blocker and DNS"
+      wingstation.url: "http://localhost:8053/admin"
+      wingstation.priority: "6"
+      wingstation.tags: "dns,adblock,networking"
+
+  # ── Infrastructure ──────────────────────────────────────────────
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
+    labels:
+      wingstation.name: "Portainer"
+      wingstation.group: "Infrastructure"
+      wingstation.icon: "🐳"
+      wingstation.description: "Docker management UI"
+      wingstation.url: "https://localhost:9443"
+      wingstation.priority: "2"
+      wingstation.tags: "docker,management"
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_SCHEDULE=0 4 * * *
+    labels:
+      wingstation.name: "Watchtower"
+      wingstation.group: "Infrastructure"
+      wingstation.icon: "🗼"
+      wingstation.description: "Automatic container image updates (daily at 4am)"
+      wingstation.priority: "30"
+      wingstation.tags: "automation,updates"
+
+  # ── Monitoring ──────────────────────────────────────────────────
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime-kuma-data:/app/data
+    labels:
+      wingstation.name: "Uptime Kuma"
+      wingstation.group: "Monitoring"
+      wingstation.icon: "📊"
+      wingstation.description: "Self-hosted uptime monitoring"
+      wingstation.url: "http://localhost:3001"
+      wingstation.priority: "10"
+      wingstation.tags: "monitoring,uptime"
+
+  # ── Home Automation ─────────────────────────────────────────────
+  homeassistant:
+    image: homeassistant/home-assistant:latest
+    container_name: homeassistant
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ha-config:/config
+    labels:
+      wingstation.name: "Home Assistant"
+      wingstation.group: "Home Automation"
+      wingstation.icon: "🏠"
+      wingstation.description: "Smart home control and automation"
+      wingstation.url: "http://localhost:8123"
+      wingstation.priority: "10"
+      wingstation.tags: "smart-home,automation,iot"
+
+  # ── Hidden container (won't appear on dashboard) ────────────────
+  debug-tools:
+    image: alpine:latest
+    container_name: debug-tools
+    command: sleep infinity
+    labels:
+      wingstation.hide: "true"
+
+volumes:
+  plex-config:
+  sonarr-config:
+  radarr-config:
+  nginx-conf:
+  nginx-certs:
+  pihole-data:
+  pihole-dns:
+  portainer-data:
+  uptime-kuma-data:
+  ha-config:

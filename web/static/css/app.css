@@ -1,0 +1,91 @@
+/* WingStation custom styles — Tailwind handles most styling via CDN */
+
+/* Status indicator pulse */
+.status-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Detail panel slide-in */
+.detail-panel {
+    transition: transform 300ms ease-in-out;
+}
+
+.detail-panel.closed {
+    transform: translateX(100%);
+}
+
+/* Container card hover effect */
+.container-card {
+    transition: box-shadow 150ms ease-in-out, transform 150ms ease-in-out;
+}
+
+.container-card:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    transform: translateY(-1px);
+}
+
+/* Search input */
+.search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Tab active state */
+.tab-active {
+    border-bottom: 2px solid #3b82f6;
+    color: #3b82f6;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Masked env value */
+.env-masked {
+    filter: blur(4px);
+    cursor: pointer;
+    user-select: none;
+}
+
+.env-masked:hover,
+.env-masked.revealed {
+    filter: none;
+    user-select: auto;
+}
+
+/* htmx loading indicator */
+.htmx-indicator {
+    display: none;
+}
+
+.htmx-request .htmx-indicator {
+    display: inline-block;
+}
+
+/* SSE connection status */
+.sse-connected {
+    color: #22c55e;
+}
+
+.sse-disconnected {
+    color: #ef4444;
+}

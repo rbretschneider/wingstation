@@ -1,0 +1,69 @@
+{{define "filter_bar"}}
+<div class="mb-6 space-y-4">
+    <!-- Search -->
+    <div class="flex items-center space-x-4">
+        <div class="flex-1 relative">
+            <input type="text"
+                   id="search-input"
+                   placeholder="Search containers..."
+                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm search-input"
+                   x-model="$store.app.searchQuery">
+            <svg class="absolute left-3 top-2.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <span class="htmx-indicator absolute right-3 top-2.5">
+                <svg class="animate-spin h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+            </span>
+        </div>
+
+        <!-- Sort -->
+        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white"
+                @change="$store.app.setSort($event.target.value)">
+            <option value="priority">Priority</option>
+            <option value="name">Name</option>
+            <option value="status">Status</option>
+            <option value="created">Created</option>
+        </select>
+    </div>
+
+    <!-- Status filter pills -->
+    <div class="flex items-center space-x-2">
+        <span class="text-sm text-gray-500">Status:</span>
+        <button @click="$store.app.setFilter('')"
+                class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
+                :class="!$store.app.statusFilter ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+            All
+        </button>
+        <button @click="$store.app.setFilter('running')"
+                class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
+                :class="$store.app.statusFilter === 'running' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+            Running
+        </button>
+        <button @click="$store.app.setFilter('exited')"
+                class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
+                :class="$store.app.statusFilter === 'exited' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+            Stopped
+        </button>
+        <button @click="$store.app.setFilter('paused')"
+                class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
+                :class="$store.app.statusFilter === 'paused' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+            Paused
+        </button>
+
+        {{if .Groups}}
+        <span class="text-gray-300">|</span>
+        <span class="text-sm text-gray-500">Group:</span>
+        <select class="border border-gray-300 rounded-lg px-2 py-1 text-xs bg-white"
+                @change="$store.app.setGroup($event.target.value)">
+            <option value="">All Groups</option>
+            {{range .Groups}}
+            <option value="{{.Name}}">{{.Name}}</option>
+            {{end}}
+        </select>
+        {{end}}
+    </div>
+</div>
+{{end}}

@@ -169,8 +169,17 @@ func ContainerFromAPI(c types.Container) Container {
 		uptime = time.Since(created)
 	}
 
+	seen := make(map[string]struct{})
 	ports := make([]PortMapping, 0, len(c.Ports))
 	for _, p := range c.Ports {
+		if p.PublicPort == 0 {
+			continue // skip unexposed container-only ports
+		}
+		key := fmt.Sprintf("%s:%d->%d/%s", p.IP, p.PublicPort, p.PrivatePort, p.Type)
+		if _, dup := seen[key]; dup {
+			continue
+		}
+		seen[key] = struct{}{}
 		ports = append(ports, PortMapping{
 			ContainerPort: portStr(p.PrivatePort, p.Type),
 			HostPort:      portStr(p.PublicPort, ""),

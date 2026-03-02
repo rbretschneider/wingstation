@@ -125,6 +125,8 @@ var funcMap = template.FuncMap{
 	"statusColor":     statusColor,
 	"joinStrings":     joinStrings,
 	"percentage":      percentage,
+	"firstN":          firstN,
+	"sub":             func(a, b int) int { return a - b },
 }
 
 // parseTemplates builds per-page template sets and a shared partials-only template.
@@ -301,4 +303,12 @@ func percentage(a, b int64) float64 {
 		return 0
 	}
 	return float64(a) / float64(b) * 100
+}
+
+// firstN returns the first n items from a PortMapping slice.
+func firstN(ports []docker.PortMapping, n int) []docker.PortMapping {
+	if len(ports) <= n {
+		return ports
+	}
+	return ports[:n]
 }

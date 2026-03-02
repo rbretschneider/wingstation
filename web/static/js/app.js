@@ -46,10 +46,22 @@ document.addEventListener('alpine:init', () => {
             htmx.ajax('GET', '/partials/containers?' + params.toString(), '#container-list');
         }
     });
+
+    // Start SSE after Alpine store is ready
+    initSSE();
+
+    // Wire up search input debounce
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(function () {
+            Alpine.store('app').searchQuery = this.value;
+            Alpine.store('app').refreshContainers();
+        }, 300));
+    }
 });
 
 // SSE connection management with auto-reconnect
-(function () {
+function initSSE() {
     let eventSource = null;
     let reconnectAttempts = 0;
     const maxReconnectDelay = 30000;
@@ -63,9 +75,7 @@ document.addEventListener('alpine:init', () => {
 
         eventSource.onopen = function () {
             reconnectAttempts = 0;
-            if (window.Alpine) {
-                Alpine.store('app').sseConnected = true;
-            }
+            Alpine.store('app').sseConnected = true;
         };
 
         eventSource.addEventListener('containers', function (e) {
@@ -85,9 +95,7 @@ document.addEventListener('alpine:init', () => {
         });
 
         eventSource.onerror = function () {
-            if (window.Alpine) {
-                Alpine.store('app').sseConnected = false;
-            }
+            Alpine.store('app').sseConnected = false;
             eventSource.close();
             // Exponential backoff reconnect
             const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), maxReconnectDelay);
@@ -96,13 +104,8 @@ document.addEventListener('alpine:init', () => {
         };
     }
 
-    // Start SSE connection when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', connect);
-    } else {
-        connect();
-    }
-})();
+    connect();
+}
 
 // Search debounce helper
 function debounce(fn, delay) {
@@ -112,16 +115,3 @@ function debounce(fn, delay) {
         timer = setTimeout(() => fn.apply(this, args), delay);
     };
 }
-
-// Wire up search input debounce
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', debounce(function () {
-            if (window.Alpine) {
-                Alpine.store('app').searchQuery = this.value;
-                Alpine.store('app').refreshContainers();
-            }
-        }, 300));
-    }
-});

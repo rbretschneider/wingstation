@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
@@ -59,13 +60,24 @@ func (b *SSEBroker) Unsubscribe(ch chan string) {
 }
 
 // Broadcast sends a message to all connected clients.
+// Multi-line data is split so each line gets its own "data:" prefix per SSE spec.
 func (b *SSEBroker) Broadcast(eventName, data string) {
-	msg := fmt.Sprintf("event: %s\ndata: %s\n\n", eventName, data)
+	var msg strings.Builder
+	msg.WriteString("event: ")
+	msg.WriteString(eventName)
+	msg.WriteString("\n")
+	for _, line := range strings.Split(data, "\n") {
+		msg.WriteString("data: ")
+		msg.WriteString(line)
+		msg.WriteString("\n")
+	}
+	msg.WriteString("\n")
+	formatted := msg.String()
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 	for ch := range b.clients {
 		select {
-		case ch <- msg:
+		case ch <- formatted:
 		default:
 			// Client buffer full, skip
 		}

@@ -63,6 +63,7 @@ func (s *Server) basicAuthMiddleware(next http.Handler) http.Handler {
 }
 
 // statusWriter wraps ResponseWriter to capture the status code.
+// It also implements http.Flusher so SSE streaming works through the middleware.
 type statusWriter struct {
 	http.ResponseWriter
 	status int
@@ -71,4 +72,10 @@ type statusWriter struct {
 func (w *statusWriter) WriteHeader(code int) {
 	w.status = code
 	w.ResponseWriter.WriteHeader(code)
+}
+
+func (w *statusWriter) Flush() {
+	if f, ok := w.ResponseWriter.(http.Flusher); ok {
+		f.Flush()
+	}
 }

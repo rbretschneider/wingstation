@@ -1,106 +1,106 @@
 {{define "content"}}
 <div class="space-y-6">
-    <h1 class="text-2xl font-bold text-gray-900">Host Information</h1>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Host Information</h1>
 
     {{if .Error}}
-    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-        <p class="text-red-800">{{.Error}}</p>
+    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+        <p class="text-red-800 dark:text-red-300">{{.Error}}</p>
     </div>
     {{else}}
 
     <!-- System Overview -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">System</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">System</h2>
         <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-                <dt class="text-sm text-gray-500">Hostname</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.Hostname}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Hostname</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.Hostname}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Operating System</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.OS}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Operating System</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.OS}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Architecture</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.Architecture}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Architecture</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.Architecture}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Kernel</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.KernelVersion}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Kernel</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.KernelVersion}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Docker Version</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.DockerVersion}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Docker Version</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.DockerVersion}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">API Version</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.APIVersion}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">API Version</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.APIVersion}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">CPUs</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.CPUs}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">CPUs</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.CPUs}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Total Memory</dt>
-                <dd class="text-sm font-medium text-gray-900">{{formatBytes .Host.TotalMemory}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Total Memory</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{formatBytes .Host.TotalMemory}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Storage Driver</dt>
-                <dd class="text-sm font-medium text-gray-900">{{.Host.StorageDriver}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Storage Driver</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{.Host.StorageDriver}}</dd>
             </div>
         </dl>
     </div>
 
     <!-- Container Stats -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Containers</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Containers</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div class="text-center p-4 bg-gray-50 rounded-lg">
-                <div class="text-2xl font-bold text-gray-900">{{.Host.ContainersTotal}}</div>
-                <div class="text-sm text-gray-500">Total</div>
+            <div class="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <div class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{.Host.ContainersTotal}}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Total</div>
             </div>
-            <div class="text-center p-4 bg-green-50 rounded-lg">
-                <div class="text-2xl font-bold text-green-600">{{.Host.ContainersRun}}</div>
-                <div class="text-sm text-gray-500">Running</div>
+            <div class="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{.Host.ContainersRun}}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Running</div>
             </div>
-            <div class="text-center p-4 bg-yellow-50 rounded-lg">
-                <div class="text-2xl font-bold text-yellow-600">{{.Host.ContainersPause}}</div>
-                <div class="text-sm text-gray-500">Paused</div>
+            <div class="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{.Host.ContainersPause}}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Paused</div>
             </div>
-            <div class="text-center p-4 bg-red-50 rounded-lg">
-                <div class="text-2xl font-bold text-red-600">{{.Host.ContainersStop}}</div>
-                <div class="text-sm text-gray-500">Stopped</div>
+            <div class="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <div class="text-2xl font-bold text-red-600 dark:text-red-400">{{.Host.ContainersStop}}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Stopped</div>
             </div>
         </div>
     </div>
 
     <!-- Disk Usage -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Disk Usage</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Disk Usage</h2>
         <dl class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-                <dt class="text-sm text-gray-500">Images</dt>
-                <dd class="text-sm font-medium text-gray-900">{{formatBytes .Host.ImagesSize}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Images</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{formatBytes .Host.ImagesSize}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Containers</dt>
-                <dd class="text-sm font-medium text-gray-900">{{formatBytes .Host.ContainersSize}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Containers</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{formatBytes .Host.ContainersSize}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Volumes</dt>
-                <dd class="text-sm font-medium text-gray-900">{{formatBytes .Host.VolumesSize}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Volumes</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{formatBytes .Host.VolumesSize}}</dd>
             </div>
             <div>
-                <dt class="text-sm text-gray-500">Build Cache</dt>
-                <dd class="text-sm font-medium text-gray-900">{{formatBytes .Host.BuildCacheSize}}</dd>
+                <dt class="text-sm text-gray-500 dark:text-gray-400">Build Cache</dt>
+                <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">{{formatBytes .Host.BuildCacheSize}}</dd>
             </div>
         </dl>
     </div>
 
     <!-- Images -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Images</h2>
-        <p class="text-sm text-gray-600">{{.Host.ImagesTotal}} images on this host</p>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Images</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400">{{.Host.ImagesTotal}} images on this host</p>
     </div>
 
     {{end}}

@@ -6,7 +6,7 @@
             <input type="text"
                    id="search-input"
                    placeholder="Search containers..."
-                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm search-input"
+                   class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg text-sm search-input placeholder-gray-400 dark:placeholder-gray-500"
                    x-model="$store.app.searchQuery">
             <svg class="absolute left-3 top-2.5 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Sort -->
-        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white"
+        <select class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm"
                 @change="$store.app.setSort($event.target.value)">
             <option value="priority">Priority</option>
             <option value="name">Name</option>
@@ -31,32 +31,32 @@
 
     <!-- Status filter pills -->
     <div class="flex items-center space-x-2">
-        <span class="text-sm text-gray-500">Status:</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400">Status:</span>
         <button @click="$store.app.setFilter('')"
                 class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
-                :class="!$store.app.statusFilter ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+                :class="!$store.app.statusFilter ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'">
             All
         </button>
         <button @click="$store.app.setFilter('running')"
                 class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
-                :class="$store.app.statusFilter === 'running' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+                :class="$store.app.statusFilter === 'running' ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'">
             Running
         </button>
         <button @click="$store.app.setFilter('exited')"
                 class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
-                :class="$store.app.statusFilter === 'exited' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+                :class="$store.app.statusFilter === 'exited' ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'">
             Stopped
         </button>
         <button @click="$store.app.setFilter('paused')"
                 class="px-3 py-1 text-xs font-medium rounded-full transition-colors"
-                :class="$store.app.statusFilter === 'paused' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+                :class="$store.app.statusFilter === 'paused' ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'">
             Paused
         </button>
 
         {{if .Groups}}
-        <span class="text-gray-300">|</span>
-        <span class="text-sm text-gray-500">Group:</span>
-        <select class="border border-gray-300 rounded-lg px-2 py-1 text-xs bg-white"
+        <span class="text-gray-300 dark:text-gray-600">|</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400">Group:</span>
+        <select class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-2 py-1 text-xs"
                 @change="$store.app.setGroup($event.target.value)">
             <option value="">All Groups</option>
             {{range .Groups}}

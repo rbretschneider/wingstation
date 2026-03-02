@@ -85,3 +85,65 @@ func (w WingStationLabels) HasTag(tag string) bool {
 	}
 	return false
 }
+
+// InferRepoURL tries to find a GitHub/source repository URL from container labels and image name.
+// Priority: OCI label > image-based heuristic.
+func InferRepoURL(labels map[string]string, image string) string {
+	// 1. Check OCI standard labels (many images set these at build time)
+	for _, key := range []string{
+		"org.opencontainers.image.source",
+		"org.opencontainers.image.url",
+		"org.label-schema.vcs-url",
+	} {
+		if v, ok := labels[key]; ok && v != "" {
+			return v
+		}
+	}
+
+	// 2. Heuristic: derive GitHub URL from image name
+	// Strip tag/digest
+	img := image
+	if at := strings.Index(img, "@"); at != -1 {
+		img = img[:at]
+	}
+	if colon := strings.LastIndex(img, ":"); colon != -1 {
+		img = img[:colon]
+	}
+	// Strip sha256: prefix if present
+	img = strings.TrimPrefix(img, "sha256:")
+
+	// Skip raw sha256 digests — no repo info
+	if len(img) == 64 && !strings.Contains(img, "/") {
+		return ""
+	}
+
+	// ghcr.io/owner/repo → github.com/owner/repo
+	if strings.HasPrefix(img, "ghcr.io/") {
+		parts := strings.SplitN(strings.TrimPrefix(img, "ghcr.io/"), "/", 3)
+		if len(parts) >= 2 {
+			return "https://github.com/" + parts[0] + "/" + parts[1]
+		}
+	}
+
+	// lscr.io/linuxserver/name or linuxserver/name → github.com/linuxserver/docker-name
+	cleaned := strings.TrimPrefix(img, "lscr.io/")
+	if strings.HasPrefix(cleaned, "linuxserver/") {
+		name := strings.TrimPrefix(cleaned, "linuxserver/")
+		return "https://github.com/linuxserver/docker-" + name
+	}
+
+	// Docker Hub library images: nginx, alpine, etc. → github.com/docker-library/name
+	if !strings.Contains(img, "/") && !strings.Contains(img, ".") {
+		return "https://hub.docker.com/_/" + img
+	}
+
+	// Docker Hub user/repo → hub.docker.com/r/user/repo (with GitHub link attempt)
+	if !strings.Contains(img, ".") {
+		parts := strings.SplitN(img, "/", 2)
+		if len(parts) == 2 {
+			return "https://hub.docker.com/r/" + parts[0] + "/" + parts[1]
+		}
+	}
+
+	return ""
+}

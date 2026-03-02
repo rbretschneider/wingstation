@@ -1,65 +1,65 @@
 {{define "detail_general"}}
 <dl class="space-y-3">
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Container ID</dt>
-        <dd class="text-sm font-mono text-gray-900">{{.FullID}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Container ID</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.FullID}}</dd>
     </div>
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Image ID</dt>
-        <dd class="text-sm font-mono text-gray-900 truncate max-w-xs">{{.ImageID}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Image ID</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 truncate max-w-xs">{{.ImageID}}</dd>
     </div>
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Created</dt>
-        <dd class="text-sm text-gray-900">{{.Created.Format "2006-01-02 15:04:05 MST"}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Created</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.Created.Format "2006-01-02 15:04:05 MST"}}</dd>
     </div>
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Restart Policy</dt>
-        <dd class="text-sm text-gray-900">{{if .RestartPolicy}}{{.RestartPolicy}}{{else}}none{{end}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Restart Policy</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{if .RestartPolicy}}{{.RestartPolicy}}{{else}}none{{end}}</dd>
     </div>
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Restart Count</dt>
-        <dd class="text-sm text-gray-900">{{.RestartCount}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Restart Count</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.RestartCount}}</dd>
     </div>
     {{if .Platform}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Platform</dt>
-        <dd class="text-sm text-gray-900">{{.Platform}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Platform</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.Platform}}</dd>
     </div>
     {{end}}
     {{if .WorkingDir}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Working Dir</dt>
-        <dd class="text-sm font-mono text-gray-900">{{.WorkingDir}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Working Dir</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.WorkingDir}}</dd>
     </div>
     {{end}}
     {{if .Entrypoint}}
     <div>
-        <dt class="text-sm text-gray-500 mb-1">Entrypoint</dt>
-        <dd class="text-sm font-mono text-gray-900 bg-gray-50 rounded p-2">{{joinStrings .Entrypoint " "}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400 mb-1">Entrypoint</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 rounded p-2">{{joinStrings .Entrypoint " "}}</dd>
     </div>
     {{end}}
     {{if .Command}}
     <div>
-        <dt class="text-sm text-gray-500 mb-1">Command</dt>
-        <dd class="text-sm font-mono text-gray-900 bg-gray-50 rounded p-2">{{joinStrings .Command " "}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400 mb-1">Command</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 rounded p-2">{{joinStrings .Command " "}}</dd>
     </div>
     {{end}}
     {{if .HealthCheck}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Health Check</dt>
-        <dd class="text-sm text-gray-900">{{.HealthStatus}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Health Check</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.HealthStatus}}</dd>
     </div>
     {{end}}
 </dl>
 
 {{if .EnvVars}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Environment Variables</h4>
-    <div class="bg-gray-50 rounded-lg divide-y divide-gray-200 text-xs">
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Environment Variables</h4>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs">
         {{range .EnvVars}}
         <div class="flex items-center px-3 py-2">
-            <span class="font-mono font-medium text-gray-700 w-1/3 truncate">{{.Key}}</span>
-            <span class="font-mono text-gray-500 w-2/3 truncate {{if isSensitiveKey .Key}}env-masked{{end}}"
+            <span class="font-mono font-medium text-gray-700 dark:text-gray-300 w-1/3 truncate">{{.Key}}</span>
+            <span class="font-mono text-gray-500 dark:text-gray-400 w-2/3 truncate {{if isSensitiveKey .Key}}env-masked{{end}}"
                   {{if isSensitiveKey .Key}}@click="$el.classList.toggle('revealed')"{{end}}>
                 {{maskValue .Key .Value}}
             </span>
@@ -71,12 +71,12 @@
 
 {{if .AllLabels}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Labels</h4>
-    <div class="bg-gray-50 rounded-lg divide-y divide-gray-200 text-xs max-h-48 overflow-y-auto">
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Labels</h4>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs max-h-48 overflow-y-auto">
         {{range $k, $v := .AllLabels}}
         <div class="flex items-center px-3 py-2">
-            <span class="font-mono font-medium text-gray-700 w-1/3 truncate">{{$k}}</span>
-            <span class="font-mono text-gray-500 w-2/3 truncate">{{$v}}</span>
+            <span class="font-mono font-medium text-gray-700 dark:text-gray-300 w-1/3 truncate">{{$k}}</span>
+            <span class="font-mono text-gray-500 dark:text-gray-400 w-2/3 truncate">{{$v}}</span>
         </div>
         {{end}}
     </div>
@@ -87,34 +87,34 @@
 {{define "detail_networking"}}
 <dl class="space-y-3">
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Hostname</dt>
-        <dd class="text-sm font-mono text-gray-900">{{.Hostname}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Hostname</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.Hostname}}</dd>
     </div>
     {{if .Domainname}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Domain</dt>
-        <dd class="text-sm font-mono text-gray-900">{{.Domainname}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Domain</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.Domainname}}</dd>
     </div>
     {{end}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Network Mode</dt>
-        <dd class="text-sm text-gray-900">{{.NetworkMode}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Network Mode</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.NetworkMode}}</dd>
     </div>
 </dl>
 
 {{if .Networks}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Networks</h4>
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Networks</h4>
     {{range .Networks}}
-    <div class="bg-gray-50 rounded-lg p-3 mb-2">
-        <div class="font-medium text-sm text-gray-900 mb-1">{{.Name}}</div>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 mb-2">
+        <div class="font-medium text-sm text-gray-900 dark:text-gray-100 mb-1">{{.Name}}</div>
         <dl class="grid grid-cols-2 gap-1 text-xs">
-            <dt class="text-gray-500">IP Address</dt>
-            <dd class="font-mono text-gray-900">{{.IPAddress}}</dd>
-            <dt class="text-gray-500">Gateway</dt>
-            <dd class="font-mono text-gray-900">{{.Gateway}}</dd>
-            <dt class="text-gray-500">MAC Address</dt>
-            <dd class="font-mono text-gray-900">{{.MacAddr}}</dd>
+            <dt class="text-gray-500 dark:text-gray-400">IP Address</dt>
+            <dd class="font-mono text-gray-900 dark:text-gray-100">{{.IPAddress}}</dd>
+            <dt class="text-gray-500 dark:text-gray-400">Gateway</dt>
+            <dd class="font-mono text-gray-900 dark:text-gray-100">{{.Gateway}}</dd>
+            <dt class="text-gray-500 dark:text-gray-400">MAC Address</dt>
+            <dd class="font-mono text-gray-900 dark:text-gray-100">{{.MacAddr}}</dd>
         </dl>
     </div>
     {{end}}
@@ -123,11 +123,11 @@
 
 {{if .Ports}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Port Mappings</h4>
-    <div class="bg-gray-50 rounded-lg divide-y divide-gray-200 text-xs">
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Port Mappings</h4>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs">
         {{range .Ports}}
         <div class="flex items-center px-3 py-2">
-            <span class="font-mono text-gray-900">
+            <span class="font-mono text-gray-900 dark:text-gray-100">
                 {{if .HostPort}}{{.HostIP}}:{{.HostPort}} → {{end}}{{.ContainerPort}}
             </span>
         </div>
@@ -138,10 +138,10 @@
 
 {{if .DNSServers}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">DNS Servers</h4>
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">DNS Servers</h4>
     <div class="flex flex-wrap gap-1">
         {{range .DNSServers}}
-        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
+        <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
         {{end}}
     </div>
 </div>
@@ -149,10 +149,10 @@
 
 {{if .ExtraHosts}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Extra Hosts</h4>
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Extra Hosts</h4>
     <div class="flex flex-wrap gap-1">
         {{range .ExtraHosts}}
-        <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
+        <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
         {{end}}
     </div>
 </div>
@@ -163,36 +163,36 @@
 {{if .Mounts}}
 <div class="space-y-2">
     {{range .Mounts}}
-    <div class="bg-gray-50 rounded-lg p-3">
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
         <div class="flex items-center justify-between mb-1">
             <span class="text-xs font-medium uppercase px-2 py-0.5 rounded
-                {{if eq .Type "bind"}}bg-blue-100 text-blue-700
-                {{else if eq .Type "volume"}}bg-green-100 text-green-700
-                {{else}}bg-gray-100 text-gray-700{{end}}">{{.Type}}</span>
+                {{if eq .Type "bind"}}bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300
+                {{else if eq .Type "volume"}}bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300
+                {{else}}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300{{end}}">{{.Type}}</span>
             {{if .ReadOnly}}
-            <span class="text-xs text-red-600 font-medium">Read Only</span>
+            <span class="text-xs text-red-600 dark:text-red-400 font-medium">Read Only</span>
             {{else}}
-            <span class="text-xs text-green-600 font-medium">Read/Write</span>
+            <span class="text-xs text-green-600 dark:text-green-400 font-medium">Read/Write</span>
             {{end}}
         </div>
         <dl class="text-xs space-y-1 mt-2">
             <div>
-                <dt class="text-gray-500 inline">Source:</dt>
-                <dd class="font-mono text-gray-900 inline ml-1">{{.Source}}</dd>
+                <dt class="text-gray-500 dark:text-gray-400 inline">Source:</dt>
+                <dd class="font-mono text-gray-900 dark:text-gray-100 inline ml-1">{{.Source}}</dd>
             </div>
             <div>
-                <dt class="text-gray-500 inline">Dest:</dt>
-                <dd class="font-mono text-gray-900 inline ml-1">{{.Destination}}</dd>
+                <dt class="text-gray-500 dark:text-gray-400 inline">Dest:</dt>
+                <dd class="font-mono text-gray-900 dark:text-gray-100 inline ml-1">{{.Destination}}</dd>
             </div>
             {{if .Driver}}
             <div>
-                <dt class="text-gray-500 inline">Driver:</dt>
-                <dd class="text-gray-900 inline ml-1">{{.Driver}}</dd>
+                <dt class="text-gray-500 dark:text-gray-400 inline">Driver:</dt>
+                <dd class="text-gray-900 dark:text-gray-100 inline ml-1">{{.Driver}}</dd>
             </div>
             {{end}}
         </dl>
         {{if isSensitivePath .Destination}}
-        <div class="mt-2 flex items-center space-x-1 text-xs text-amber-600">
+        <div class="mt-2 flex items-center space-x-1 text-xs text-amber-600 dark:text-amber-400">
             <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
             </svg>
@@ -203,64 +203,64 @@
     {{end}}
 </div>
 {{else}}
-<p class="text-sm text-gray-500">No volumes or mounts configured.</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">No volumes or mounts configured.</p>
 {{end}}
 {{end}}
 
 {{define "detail_security"}}
 {{if .Privileged}}
-<div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+<div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 mb-4">
     <div class="flex items-center space-x-2">
-        <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
         </svg>
-        <span class="text-sm font-semibold text-red-800">Privileged Mode Enabled</span>
+        <span class="text-sm font-semibold text-red-800 dark:text-red-300">Privileged Mode Enabled</span>
     </div>
-    <p class="text-xs text-red-600 mt-1">This container has full access to the host.</p>
+    <p class="text-xs text-red-600 dark:text-red-400 mt-1">This container has full access to the host.</p>
 </div>
 {{end}}
 
 <dl class="space-y-3">
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">User</dt>
-        <dd class="text-sm font-mono text-gray-900">{{if .User}}{{.User}}{{else}}root (default){{end}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">User</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{if .User}}{{.User}}{{else}}root (default){{end}}</dd>
     </div>
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Read-only Root</dt>
-        <dd class="text-sm text-gray-900">{{if .ReadOnlyRoot}}Yes{{else}}No{{end}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Read-only Root</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{if .ReadOnlyRoot}}Yes{{else}}No{{end}}</dd>
     </div>
     {{if .AppArmor}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">AppArmor</dt>
-        <dd class="text-sm text-gray-900">{{.AppArmor}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">AppArmor</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.AppArmor}}</dd>
     </div>
     {{end}}
     {{if .Seccomp}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Seccomp</dt>
-        <dd class="text-sm text-gray-900">{{.Seccomp}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Seccomp</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.Seccomp}}</dd>
     </div>
     {{end}}
     {{if .PidMode}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">PID Mode</dt>
-        <dd class="text-sm text-gray-900">{{.PidMode}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">PID Mode</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.PidMode}}</dd>
     </div>
     {{end}}
     {{if .IpcMode}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">IPC Mode</dt>
-        <dd class="text-sm text-gray-900">{{.IpcMode}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">IPC Mode</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.IpcMode}}</dd>
     </div>
     {{end}}
 </dl>
 
 {{if .CapAdd}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Added Capabilities</h4>
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Added Capabilities</h4>
     <div class="flex flex-wrap gap-1">
         {{range .CapAdd}}
-        <span class="bg-amber-100 text-amber-700 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
+        <span class="bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
         {{end}}
     </div>
 </div>
@@ -268,10 +268,10 @@
 
 {{if .CapDrop}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Dropped Capabilities</h4>
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Dropped Capabilities</h4>
     <div class="flex flex-wrap gap-1">
         {{range .CapDrop}}
-        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
+        <span class="bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 px-2 py-1 rounded text-xs font-mono">{{.}}</span>
         {{end}}
     </div>
 </div>
@@ -282,52 +282,52 @@
 <dl class="space-y-3">
     {{if .NanoCPUs}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">CPU Limit</dt>
-        <dd class="text-sm text-gray-900">{{formatNanoCPU .NanoCPUs}} CPUs</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">CPU Limit</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{formatNanoCPU .NanoCPUs}} CPUs</dd>
     </div>
     {{end}}
     {{if .CPUShares}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">CPU Shares</dt>
-        <dd class="text-sm text-gray-900">{{.CPUShares}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">CPU Shares</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.CPUShares}}</dd>
     </div>
     {{end}}
     {{if .CPUSetCPUs}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">CPU Pinning</dt>
-        <dd class="text-sm font-mono text-gray-900">{{.CPUSetCPUs}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">CPU Pinning</dt>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.CPUSetCPUs}}</dd>
     </div>
     {{end}}
     {{if .MemoryLimit}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Memory Limit</dt>
-        <dd class="text-sm text-gray-900">{{formatBytes .MemoryLimit}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Memory Limit</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{formatBytes .MemoryLimit}}</dd>
     </div>
     {{end}}
     {{if and .MemorySwap (ne .MemorySwap 0)}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">Memory + Swap</dt>
-        <dd class="text-sm text-gray-900">
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Memory + Swap</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">
             {{if eq .MemorySwap -1}}Unlimited{{else}}{{formatBytes .MemorySwap}}{{end}}
         </dd>
     </div>
     {{end}}
     {{if .GPUs}}
     <div class="flex justify-between">
-        <dt class="text-sm text-gray-500">GPU</dt>
-        <dd class="text-sm text-gray-900">{{.GPUs}}</dd>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">GPU</dt>
+        <dd class="text-sm text-gray-900 dark:text-gray-100">{{.GPUs}}</dd>
     </div>
     {{end}}
 </dl>
 
 {{if .Devices}}
 <div class="mt-4">
-    <h4 class="text-sm font-medium text-gray-900 mb-2">Device Mappings</h4>
-    <div class="bg-gray-50 rounded-lg divide-y divide-gray-200 text-xs">
+    <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Device Mappings</h4>
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs">
         {{range .Devices}}
         <div class="flex items-center justify-between px-3 py-2">
-            <span class="font-mono text-gray-900">{{.Host}} → {{.Container}}</span>
-            <span class="text-gray-500">{{.Perms}}</span>
+            <span class="font-mono text-gray-900 dark:text-gray-100">{{.Host}} → {{.Container}}</span>
+            <span class="text-gray-500 dark:text-gray-400">{{.Perms}}</span>
         </div>
         {{end}}
     </div>
@@ -335,6 +335,6 @@
 {{end}}
 
 {{if not (or .NanoCPUs .CPUShares .CPUSetCPUs .MemoryLimit .GPUs (gt (len .Devices) 0))}}
-<p class="text-sm text-gray-500">No hardware constraints configured. Container uses host defaults.</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">No hardware constraints configured. Container uses host defaults.</p>
 {{end}}
 {{end}}

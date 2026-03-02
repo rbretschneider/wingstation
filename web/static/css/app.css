@@ -29,6 +29,10 @@
     transform: translateY(-1px);
 }
 
+.dark .container-card:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+}
+
 /* Search input */
 .search-input:focus {
     outline: none;
@@ -59,6 +63,14 @@
     background: #94a3b8;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
 /* Masked env value */
 .env-masked {
     filter: blur(4px);
@@ -79,13 +91,4 @@
 
 .htmx-request .htmx-indicator {
     display: inline-block;
-}
-
-/* SSE connection status */
-.sse-connected {
-    color: #22c55e;
-}
-
-.sse-disconnected {
-    color: #ef4444;
 }

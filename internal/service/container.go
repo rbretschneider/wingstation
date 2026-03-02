@@ -208,6 +208,7 @@ func containerDetailFromInspect(raw types.ContainerJSON) *docker.ContainerDetail
 
 	d.AllLabels = raw.Config.Labels
 	d.Labels = docker.ParseLabels(raw.Config.Labels)
+	d.RepoURL = docker.InferRepoURL(raw.Config.Labels, raw.Config.Image)
 
 	// General
 	if raw.HostConfig != nil && raw.HostConfig.RestartPolicy.Name != "" {

@@ -87,6 +87,9 @@ type ContainerDetail struct {
 	HealthCheck   string
 	HealthStatus  string
 	HealthRetries int
+
+	// Source
+	RepoURL string
 }
 
 // PortMapping represents a port binding.

@@ -30,6 +30,9 @@ type Config struct {
 	SSERetryMs      int
 	StatsIntervalMs int
 
+	// Terminal
+	TerminalEnabled bool
+
 	// Logging
 	LogLevel string
 }
@@ -48,6 +51,7 @@ func Load() *Config {
 		SSEEnabled:      envBool("WINGSTATION_SSE_ENABLED", true),
 		SSERetryMs:      envInt("WINGSTATION_SSE_RETRY_MS", 3000),
 		StatsIntervalMs: envInt("WINGSTATION_STATS_INTERVAL_MS", 5000),
+		TerminalEnabled: envBool("WINGSTATION_TERMINAL_ENABLED", false),
 		LogLevel:        envStr("WINGSTATION_LOG_LEVEL", "info"),
 	}
 }

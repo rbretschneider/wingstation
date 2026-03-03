@@ -1,51 +1,51 @@
 {{define "detail_general"}}
 <dl class="space-y-3">
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Container ID</dt>
-        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.FullID}}</dd>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 break-all">{{.FullID}}</dd>
     </div>
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Image ID</dt>
-        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 truncate max-w-xs">{{.ImageID}}</dd>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 break-all">{{.ImageID}}</dd>
     </div>
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Created</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.Created.Format "2006-01-02 15:04:05 MST"}}</dd>
     </div>
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Restart Policy</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{if .RestartPolicy}}{{.RestartPolicy}}{{else}}none{{end}}</dd>
     </div>
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Restart Count</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.RestartCount}}</dd>
     </div>
     {{if .Platform}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Platform</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.Platform}}</dd>
     </div>
     {{end}}
     {{if .WorkingDir}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Working Dir</dt>
-        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.WorkingDir}}</dd>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 break-all">{{.WorkingDir}}</dd>
     </div>
     {{end}}
     {{if .Entrypoint}}
     <div>
         <dt class="text-sm text-gray-500 dark:text-gray-400 mb-1">Entrypoint</dt>
-        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 rounded p-2">{{joinStrings .Entrypoint " "}}</dd>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 rounded p-2 break-all">{{joinStrings .Entrypoint " "}}</dd>
     </div>
     {{end}}
     {{if .Command}}
     <div>
         <dt class="text-sm text-gray-500 dark:text-gray-400 mb-1">Command</dt>
-        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 rounded p-2">{{joinStrings .Command " "}}</dd>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900 rounded p-2 break-all">{{joinStrings .Command " "}}</dd>
     </div>
     {{end}}
     {{if .HealthCheck}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Health Check</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.HealthStatus}}</dd>
     </div>
@@ -57,9 +57,9 @@
     <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Environment Variables</h4>
     <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs">
         {{range .EnvVars}}
-        <div class="flex items-center px-3 py-2">
-            <span class="font-mono font-medium text-gray-700 dark:text-gray-300 w-1/3 truncate">{{.Key}}</span>
-            <span class="font-mono text-gray-500 dark:text-gray-400 w-2/3 truncate {{if isSensitiveKey .Key}}env-masked{{end}}"
+        <div class="flex flex-col sm:flex-row sm:items-center px-3 py-2 gap-0.5 sm:gap-0">
+            <span class="font-mono font-medium text-gray-700 dark:text-gray-300 sm:w-1/3 truncate">{{.Key}}</span>
+            <span class="font-mono text-gray-500 dark:text-gray-400 sm:w-2/3 break-all {{if isSensitiveKey .Key}}env-masked{{end}}"
                   {{if isSensitiveKey .Key}}@click="$el.classList.toggle('revealed')"{{end}}>
                 {{maskValue .Key .Value}}
             </span>
@@ -74,9 +74,9 @@
     <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Labels</h4>
     <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs max-h-48 overflow-y-auto">
         {{range $k, $v := .AllLabels}}
-        <div class="flex items-center px-3 py-2">
-            <span class="font-mono font-medium text-gray-700 dark:text-gray-300 w-1/3 truncate">{{$k}}</span>
-            <span class="font-mono text-gray-500 dark:text-gray-400 w-2/3 truncate">{{$v}}</span>
+        <div class="flex flex-col sm:flex-row sm:items-center px-3 py-2 gap-0.5 sm:gap-0">
+            <span class="font-mono font-medium text-gray-700 dark:text-gray-300 sm:w-1/3 truncate">{{$k}}</span>
+            <span class="font-mono text-gray-500 dark:text-gray-400 sm:w-2/3 break-all">{{$v}}</span>
         </div>
         {{end}}
     </div>
@@ -86,17 +86,17 @@
 
 {{define "detail_networking"}}
 <dl class="space-y-3">
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Hostname</dt>
-        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.Hostname}}</dd>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 break-all">{{.Hostname}}</dd>
     </div>
     {{if .Domainname}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Domain</dt>
-        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.Domainname}}</dd>
+        <dd class="text-sm font-mono text-gray-900 dark:text-gray-100 break-all">{{.Domainname}}</dd>
     </div>
     {{end}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Network Mode</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.NetworkMode}}</dd>
     </div>
@@ -127,7 +127,7 @@
     <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs">
         {{range .Ports}}
         <div class="flex items-center px-3 py-2">
-            <span class="font-mono text-gray-900 dark:text-gray-100">
+            <span class="font-mono text-gray-900 dark:text-gray-100 break-all">
                 {{if .HostPort}}{{.HostIP}}:{{.HostPort}} → {{end}}{{.ContainerPort}}
             </span>
         </div>
@@ -175,14 +175,14 @@
             <span class="text-xs text-green-600 dark:text-green-400 font-medium">Read/Write</span>
             {{end}}
         </div>
-        <dl class="text-xs space-y-1 mt-2">
+        <dl class="text-xs space-y-1 mt-2 overflow-hidden">
             <div>
                 <dt class="text-gray-500 dark:text-gray-400 inline">Source:</dt>
-                <dd class="font-mono text-gray-900 dark:text-gray-100 inline ml-1">{{.Source}}</dd>
+                <dd class="font-mono text-gray-900 dark:text-gray-100 inline ml-1 break-all">{{.Source}}</dd>
             </div>
             <div>
                 <dt class="text-gray-500 dark:text-gray-400 inline">Dest:</dt>
-                <dd class="font-mono text-gray-900 dark:text-gray-100 inline ml-1">{{.Destination}}</dd>
+                <dd class="font-mono text-gray-900 dark:text-gray-100 inline ml-1 break-all">{{.Destination}}</dd>
             </div>
             {{if .Driver}}
             <div>
@@ -221,34 +221,34 @@
 {{end}}
 
 <dl class="space-y-3">
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">User</dt>
         <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{if .User}}{{.User}}{{else}}root (default){{end}}</dd>
     </div>
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Read-only Root</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{if .ReadOnlyRoot}}Yes{{else}}No{{end}}</dd>
     </div>
     {{if .AppArmor}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">AppArmor</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.AppArmor}}</dd>
     </div>
     {{end}}
     {{if .Seccomp}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Seccomp</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.Seccomp}}</dd>
     </div>
     {{end}}
     {{if .PidMode}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">PID Mode</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.PidMode}}</dd>
     </div>
     {{end}}
     {{if .IpcMode}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">IPC Mode</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.IpcMode}}</dd>
     </div>
@@ -281,31 +281,31 @@
 {{define "detail_hardware"}}
 <dl class="space-y-3">
     {{if .NanoCPUs}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">CPU Limit</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{formatNanoCPU .NanoCPUs}} CPUs</dd>
     </div>
     {{end}}
     {{if .CPUShares}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">CPU Shares</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.CPUShares}}</dd>
     </div>
     {{end}}
     {{if .CPUSetCPUs}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">CPU Pinning</dt>
         <dd class="text-sm font-mono text-gray-900 dark:text-gray-100">{{.CPUSetCPUs}}</dd>
     </div>
     {{end}}
     {{if .MemoryLimit}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Memory Limit</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{formatBytes .MemoryLimit}}</dd>
     </div>
     {{end}}
     {{if and .MemorySwap (ne .MemorySwap 0)}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">Memory + Swap</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">
             {{if eq .MemorySwap -1}}Unlimited{{else}}{{formatBytes .MemorySwap}}{{end}}
@@ -313,7 +313,7 @@
     </div>
     {{end}}
     {{if .GPUs}}
-    <div class="flex justify-between">
+    <div class="flex flex-col sm:flex-row sm:justify-between">
         <dt class="text-sm text-gray-500 dark:text-gray-400">GPU</dt>
         <dd class="text-sm text-gray-900 dark:text-gray-100">{{.GPUs}}</dd>
     </div>
@@ -325,8 +325,8 @@
     <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Device Mappings</h4>
     <div class="bg-gray-50 dark:bg-gray-900 rounded-lg divide-y divide-gray-200 dark:divide-gray-700 text-xs">
         {{range .Devices}}
-        <div class="flex items-center justify-between px-3 py-2">
-            <span class="font-mono text-gray-900 dark:text-gray-100">{{.Host}} → {{.Container}}</span>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-3 py-2">
+            <span class="font-mono text-gray-900 dark:text-gray-100 break-all">{{.Host}} → {{.Container}}</span>
             <span class="text-gray-500 dark:text-gray-400">{{.Perms}}</span>
         </div>
         {{end}}

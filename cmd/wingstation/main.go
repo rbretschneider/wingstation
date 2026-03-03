@@ -39,6 +39,7 @@ func main() {
 		"port", cfg.Port,
 		"docker_socket", cfg.DockerSocket,
 		"sse_enabled", cfg.SSEEnabled,
+		"terminal_enabled", cfg.TerminalEnabled,
 	)
 
 	// Create Docker client
@@ -59,6 +60,17 @@ func main() {
 	}
 	slog.Info("Connected to Docker daemon")
 
+	// Create exec client for terminal (optional)
+	var execClient docker.ExecClient
+	if cfg.TerminalEnabled {
+		slog.Warn("Terminal mode is ENABLED — this breaks the read-only guarantee")
+		execClient, err = docker.NewExecClient(cfg.DockerSocket)
+		if err != nil {
+			slog.Error("Failed to create exec client", "error", err)
+			os.Exit(1)
+		}
+	}
+
 	// Create cache
 	appCache := cache.New(cfg.CacheTTL)
 	defer appCache.Stop()
@@ -68,7 +80,7 @@ func main() {
 	hostSvc := service.NewHostService(dockerClient, appCache)
 
 	// Create and start server
-	srv, err := server.New(cfg, containerSvc, hostSvc, dockerClient)
+	srv, err := server.New(cfg, containerSvc, hostSvc, dockerClient, execClient)
 	if err != nil {
 		slog.Error("Failed to create server", "error", err)
 		os.Exit(1)

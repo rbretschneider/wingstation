@@ -22,6 +22,7 @@ type Server struct {
 	containerService *service.ContainerService
 	hostService      *service.HostService
 	dockerClient     docker.ReadOnlyClient
+	execClient       docker.ExecClient // nil when terminal is disabled
 	pages            map[string]*template.Template // per-page template sets (base+partials+page)
 	partials         *template.Template            // shared partials for htmx responses
 	httpServer       *http.Server
@@ -29,13 +30,15 @@ type Server struct {
 }
 
 // New creates a new Server with all dependencies wired.
+// execClient may be nil when terminal feature is disabled.
 func New(
 	cfg *config.Config,
 	containerService *service.ContainerService,
 	hostService *service.HostService,
 	dockerClient docker.ReadOnlyClient,
+	execClient docker.ExecClient,
 ) (*Server, error) {
-	pages, partials, err := parseTemplates()
+	pages, partials, err := parseTemplates(cfg.TerminalEnabled)
 	if err != nil {
 		return nil, fmt.Errorf("parsing templates: %w", err)
 	}
@@ -45,6 +48,7 @@ func New(
 		containerService: containerService,
 		hostService:      hostService,
 		dockerClient:     dockerClient,
+		execClient:       execClient,
 		pages:            pages,
 		partials:         partials,
 		sse:              NewSSEBroker(),
@@ -93,6 +97,11 @@ func (s *Server) registerRoutes(mux *http.ServeMux) {
 	// SSE
 	mux.HandleFunc("GET /events", s.handleSSE)
 
+	// Terminal WebSocket (only when exec client is available)
+	if s.execClient != nil {
+		mux.HandleFunc("GET /ws/terminal", s.handleTerminalWS)
+	}
+
 	// Health
 	mux.HandleFunc("GET /healthz", s.handleHealthz)
 }
@@ -115,24 +124,29 @@ func (s *Server) Shutdown(ctx context.Context) error {
 	return s.httpServer.Shutdown(ctx)
 }
 
-var funcMap = template.FuncMap{
-	"formatUptime":    formatUptime,
-	"formatBytes":     formatBytes,
-	"formatNanoCPU":   formatNanoCPU,
-	"maskValue":       maskValue,
-	"isSensitiveKey":  isSensitiveKey,
-	"isSensitivePath": isSensitivePath,
-	"statusColor":     statusColor,
-	"joinStrings":     joinStrings,
-	"percentage":      percentage,
-	"firstN":          firstN,
-	"sub":             func(a, b int) int { return a - b },
+func buildFuncMap(terminalEnabled bool) template.FuncMap {
+	return template.FuncMap{
+		"formatUptime":    formatUptime,
+		"formatBytes":     formatBytes,
+		"formatNanoCPU":   formatNanoCPU,
+		"maskValue":       maskValue,
+		"isSensitiveKey":  isSensitiveKey,
+		"isSensitivePath": isSensitivePath,
+		"statusColor":     statusColor,
+		"joinStrings":     joinStrings,
+		"percentage":      percentage,
+		"firstN":          firstN,
+		"sub":             func(a, b int) int { return a - b },
+		"terminalEnabled": func() bool { return terminalEnabled },
+	}
 }
 
 // parseTemplates builds per-page template sets and a shared partials-only template.
 // Each page set = base layout + all partials + that specific page template.
 // This avoids the "last define wins" problem with multiple pages defining {{define "content"}}.
-func parseTemplates() (map[string]*template.Template, *template.Template, error) {
+func parseTemplates(terminalEnabled bool) (map[string]*template.Template, *template.Template, error) {
+	fm := buildFuncMap(terminalEnabled)
+
 	// Read shared files: base layout + all partials
 	sharedFiles := []string{"templates/layouts/base.html"}
 	partialMatches, err := fs.Glob(web.Files, "templates/partials/*.html")
@@ -151,7 +165,7 @@ func parseTemplates() (map[string]*template.Template, *template.Template, error)
 	}
 
 	// Build a partials-only template set for htmx partial rendering
-	partials := template.New("").Funcs(funcMap)
+	partials := template.New("").Funcs(fm)
 	for _, f := range partialMatches {
 		if _, err := partials.New(f).Parse(sharedContents[f]); err != nil {
 			return nil, nil, fmt.Errorf("parsing partial %s: %w", f, err)
@@ -176,7 +190,7 @@ func parseTemplates() (map[string]*template.Template, *template.Template, error)
 		}
 
 		// Build a fresh template set: shared files + this page
-		t := template.New("base").Funcs(funcMap)
+		t := template.New("base").Funcs(fm)
 		for f, content := range sharedContents {
 			if _, err := t.New(f).Parse(content); err != nil {
 				return nil, nil, fmt.Errorf("parsing %s for page %s: %w", f, name, err)

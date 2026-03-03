@@ -84,6 +84,21 @@
     user-select: auto;
 }
 
+/* Hide scrollbar for tab bar on mobile */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Terminal container */
+#terminal-container .xterm {
+    padding: 4px;
+}
+
 /* htmx loading indicator */
 .htmx-indicator {
     display: none;
